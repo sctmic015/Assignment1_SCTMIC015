@@ -46,10 +46,6 @@ public class LSArrayApp {
       else
         printAllAreas();
 
-
-
-      //WriteOperationsToTxt("2, 13, 04", 4);
-
    }
 
    public static String[] splitString(String str) {
@@ -93,14 +89,40 @@ public class LSArrayApp {
 	      }
 	   }
 
-	   public static void writeOperationsToTxt(String information, int opCount) throws IOException {
-	      FileWriter fileWriter = new FileWriter("OpCount.txt", true);
-        BufferedWriter buffer = new BufferedWriter(fileWriter);
-	      buffer.write("Data Structure: Array" + '\n'
-            + "Stage, date and start time tested: " + information + '\n' + "Operations counted: "
-            + Integer.toString(opCount) + '\n');
+	   /*public static void writeOperationsToTxt(String information, int opCount) throws IOException {
+       FileWriter fileWriter = new FileWriter("OpCount.txt");
+       BufferedWriter buffer = new BufferedWriter(fileWriter);
+       PrintWriter printer = new PrintWriter(buffer);
+       printer.println("Data Structure: Tree" + '\n' + "Stage, date and start time tested: "
+           + information + '\n' + "Operations counted: "
+           + Integer.toString(opCount) + '\n');
+        buffer.close();
+      }  */
 
+      public static void writeOperationsToTxt(String information, int opCount) throws IOException{
+        FileWriter fw = null;
+        BufferedWriter bw = null;
+        PrintWriter pw = null;
 
-	   }
+        try {
+            fw = new FileWriter("opCountArray", true);
+            bw = new BufferedWriter(fw);
+            pw = new PrintWriter(bw);
 
+            pw.println("Data Structure: Array" + '\n' + "Stage, date and start time tested: "
+                + information + '\n' + "Operations counted: "
+                + Integer.toString(opCount) + '\n');
+            pw.flush();
+
+        } finally {
+            try {
+                pw.close();
+                bw.close();
+                fw.close();
+            } catch (IOException io) {// can't do anything }
+            }
+
+        }
+
+      }
 }
