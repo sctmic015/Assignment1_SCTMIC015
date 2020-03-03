@@ -1,3 +1,7 @@
+/** LSBSTApp for sorting LSItmes into a tree*
+* @author SCTMIC015
+*/
+
 import java.io.*;
 import java.util.*;
 
@@ -5,6 +9,11 @@ public class LSBSTApp {
 
    private static BST tree;
    private static int opCount = 0;
+
+   /** Main method for reading in Load shedding data set and printing out the eoperation count for the corresponding
+   stage, day and start time. Prints out a list of all times if no paramters given
+   * @param args the stage, day and start time to search for
+   */
 
    public static void main(String[] args) throws IOException {
       File file = new File("Load_Shedding_All_Areas_Schedule_and_Map.clean.final.txt");
@@ -44,6 +53,8 @@ public class LSBSTApp {
 
    }
 
+   /** Method to split each line in the file so that it can be read into the Array
+   */
    public static String[] splitString(String str) {
       String line = str.trim();
       String info = "";
@@ -60,7 +71,11 @@ public class LSBSTApp {
       return splitString;
    }
 
-    public static void printAreas(String information) {
+   /** Method to print out the Areas of the given the corresponding date, stage and start time.
+   * Returns Areas not found if there is no match
+   * @param String information String value for the stage, day and time queried.
+   */
+   public static void printAreas(String information) {
       LSItems searchLS = tree.search(information);
       if (searchLS != null)
          System.out.println(searchLS);
@@ -68,6 +83,8 @@ public class LSBSTApp {
          System.out.println("information not found");
     }
 
+    /** Method to print out all the "day, stage and start time" and their corresponding areas via an inorder traversal of the tree
+    */
     public static void printAllAreas() {
 	   tree.inorder(tree.root);
 	   }
@@ -82,6 +99,12 @@ public class LSBSTApp {
          buffer.close();
 	   } */
 
+
+     /** Method that writes the number of operations used to find an area when given the corresponding stage, day and start time.
+     * @throws IOException if fails to write the paramters to file
+     * @param String information String value for the stage, day and time queried.
+     * @param int opCount int value for number of operations used
+     */
      public static void writeOperationsToTxt(String information, int opCount) throws IOException{
        FileWriter fw = null;
        BufferedWriter bw = null;

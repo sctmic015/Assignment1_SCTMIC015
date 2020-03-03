@@ -1,3 +1,7 @@
+/** Modified Class for Binary Search Tree objects
+* @author https://www.sanfoundry.com/java-program-implement-binary-search-tree/
+*/
+
 import java.util.Scanner;
 
 public class BST
@@ -63,6 +67,8 @@ public class BST
 
      }  */
 
+     /** Function to search for an element.
+     */
      public LSItems search(String info){
       opCount = 0;
   		BSTNode current = root;
@@ -79,6 +85,8 @@ public class BST
   		return null;
   	}
 
+    /** Function for inorder traversal
+    */
     public void inorder(BSTNode root) {
       if (root != null) {
          inorder(root.left);
