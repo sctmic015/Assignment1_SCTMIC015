@@ -8,6 +8,8 @@ def random_line(afile):
       line = aline
     return line
 
+def infoFromLine()
+
 file = open("Load_Shedding_All_Areas_Schedule_and_Map.clean.final.txt", "r")
 print(random_line(file))
 
