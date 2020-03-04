@@ -46,6 +46,7 @@ public class LSArrayApp {
          printAreas(args[0]);
          try {
             writeOperationsToTxt(args[0], opCount);
+            writeOperationsToCSV(args[0], opCount);
          }
         catch(FileNotFoundException e) {
           throw new RuntimeException(e);
@@ -146,4 +147,34 @@ public class LSArrayApp {
         }
 
       }
+
+
+      public static void writeOperationsToCSV(String information, int opCount) throws IOException{
+        FileWriter fw = null;
+        BufferedWriter bw = null;
+        PrintWriter pw = null;
+
+        try {
+            fw = new FileWriter("opCountArrayTest.csv", true);
+            bw = new BufferedWriter(fw);
+            pw = new PrintWriter(bw);
+
+            //pw.println("Data Structure: Array" + '\n' + "Stage, date and start time tested: "
+              //  + information + '\n' + "Operations counted: "
+                //+ Integer.toString(opCount) + '\n');
+
+            pw.println(information + " , " + Integer.toString(opCount));
+            pw.flush();
+
+        } finally {
+            try {
+                pw.close();
+                bw.close();
+                fw.close();
+            } catch (IOException io) {// can't do anything }
+            }
+
+        }
+      }
+
 }
