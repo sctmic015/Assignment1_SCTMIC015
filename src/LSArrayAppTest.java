@@ -13,12 +13,10 @@ public class LSArrayAppTest {
 
    public static void main(String[] args) throws IOException {
 
-     File file = new File("subset:0.txt");
-      //File file = new File(args[0]);
+     File file = new File(args[0] + ".txt");
 
-      LSItemsArray = new LSItems[lineCounter("subset:0.txt")];
+      LSItemsArray = new LSItems[lineCounter(args[0] + ".txt")];
       Scanner scan;
-      //Scanner scan = new Scanner(file);
 
       try {
          scan = new Scanner(file);
@@ -26,7 +24,7 @@ public class LSArrayAppTest {
          while (scan.hasNextLine()){
             String line = scan.nextLine();
             String[] splitString = splitString(line);
-            //System.out.println(Arrays.toString(splitString));
+            
             LSItems lsItem = new LSItems(splitString[0], splitString[1]);
             LSItemsArray[count] = lsItem;
             count++;
@@ -37,16 +35,19 @@ public class LSArrayAppTest {
       catch(FileNotFoundException e) {
          throw new RuntimeException(e);
       }
-      for (int i = 0; i < LSItemsArray.length; i++){
-        opCount = 0;
-        printAreas(LSItemsArray[i].getInformation());
-      }
+     
 
       for (int i = 0; i < LSItemsArray.length; i++){
         LSItems item = LSItemsArray[i];
         opCount = 0;
-        FinalPrintThing(item.getInformation());
-
+        printAreas(item.getInformation());
+         try {
+            writeOperationsToTxt(item.getInformation(), opCount);
+            writeOperationsToCSV(item.getInformation(), opCount, args[0]);
+         }
+        catch(FileNotFoundException e) {
+          throw new RuntimeException(e);
+        }
       }
 
    }
@@ -67,20 +68,6 @@ public class LSArrayAppTest {
       areas = areas.trim();
       String[] splitString = new String[]{info, areas};
       return splitString;
-   }
-
-   public static void FinalPrintThing(String information){
-     boolean bool = false;
-     for (int i = 0; i < LSItemsArray.length; i ++){
-       LSItems item = LSItemsArray[i];
-       opCount ++;
-       if (item.getInformation().equals(information)){
-         bool = true;
-         try {writeOperationsToCSV(information, opCount);}
-         catch (IOException e){throw new RuntimeException(e);}
-       }
-       break;
-     }
    }
 
    /** Method to print out the Areas of the given the corresponding date, stage and start time.
@@ -104,38 +91,13 @@ public class LSArrayAppTest {
             System.out.println("Areas not found");
    }
 
-   /** Method to print out all the "day, stage and start time" and their corresponding areas.
-   */
-   public static void printAllAreas() {
-	      for (int i = 0; i <= 2967; i++) {
-	         System.out.println("Load Shedding Inforamtion: " + LSItemsArray[i].getInformation()
-                + ": Corresponding Areas: " + LSItemsArray[i].getAreas());
-
-	      }
-	   }
-
-	   /*public static void writeOperationsToTxt(String information, int opCount) throws IOException {
-       FileWriter fileWriter = new FileWriter("OpCount.txt");
-       BufferedWriter buffer = new BufferedWriter(fileWriter);
-       PrintWriter printer = new PrintWriter(buffer);
-       printer.println("Data Structure: Tree" + '\n' + "Stage, date and start time tested: "
-           + information + '\n' + "Operations counted: "
-           + Integer.toString(opCount) + '\n');
-        buffer.close();
-      }  */
-
-      /** Method that writes the number of operations used to find an area when given the corresponding stage, day and start time.
-      * @throws IOException if fails to write the paramters to file
-      * @param String information String value for the stage, day and time queried.
-      * @param int opCount int value for number of operations used
-      */
       public static void writeOperationsToTxt(String information, int opCount) throws IOException{
         FileWriter fw = null;
         BufferedWriter bw = null;
         PrintWriter pw = null;
 
         try {
-            fw = new FileWriter("opCountArray", true);
+            fw = new FileWriter("opCountArray.txt", true);
             bw = new BufferedWriter(fw);
             pw = new PrintWriter(bw);
 
@@ -157,13 +119,14 @@ public class LSArrayAppTest {
       }
 
 
-      public static void writeOperationsToCSV(String information, int opCount) throws IOException{
+      public static void writeOperationsToCSV(String information, int opCount, String filename) throws IOException{
         FileWriter fw = null;
         BufferedWriter bw = null;
         PrintWriter pw = null;
 
+        
         try {
-            fw = new FileWriter("opCountArrayTest.csv", true);
+            fw = new FileWriter((filename + ".csv"), true);
             bw = new BufferedWriter(fw);
             pw = new PrintWriter(bw);
 
@@ -185,12 +148,15 @@ public class LSArrayAppTest {
         }
       }
 
-      public static int lineCounter(String file){
+      public static int lineCounter(String inputFile) throws IOException{
+        File file = new File(inputFile);
         Scanner scan = new Scanner(file);
         int count = 0;
         while (scan.hasNextLine()){
           count++;
+          System.out.println(scan.nextLine());
         }
+        System.out.print(count);
         return count;
       }
 
